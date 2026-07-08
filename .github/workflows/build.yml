@@ -1,0 +1,33 @@
+name: Build Mod from ZIP
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Unzip Project
+        run: |
+          unzip scythe-sorting-v3.zip
+          # Move os arquivos da pasta interna para a raiz
+          mv scythe-sorting/* .
+          # Garante que o script de compilação tenha permissão
+          chmod +x gradlew
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Scythe-Sorting-Jar
+          path: build/libs/*.jar
+          
