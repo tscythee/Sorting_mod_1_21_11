@@ -1,4 +1,4 @@
-name: Build Mod v4
+name: Build Mod v5 (Final)
 on: [push, pull_request]
 
 jobs:
@@ -10,8 +10,7 @@ jobs:
 
       - name: Unzip and Prepare
         run: |
-          unzip scythe-sorting-v4.zip
-          # Entra na pasta e dá permissão
+          unzip scythe-sorting-v5.zip
           cd scythe-sorting
           chmod +x gradlew
 
@@ -24,11 +23,12 @@ jobs:
       - name: Build with Gradle
         run: |
           cd scythe-sorting
-          ./gradlew build
+          ./gradlew build --stacktrace
 
       - name: Upload Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: Scythe-Sorting-v4-JAR
+          name: Scythe-Sorting-v5-JAR
           path: scythe-sorting/build/libs/*.jar
           
